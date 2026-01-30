@@ -27,7 +27,6 @@ def get_agent():
 
     if not all([api_key, base_url]):
         raise ValueError("YANDEX_API_KEY или YANDEX_API_BASE_URL не установлены в .env файле.")
-    print(api_key)
 
     yandex_model = OpenAILike(
         id=f"gpt://{folder_id}/qwen3-235b-a22b-fp8/latest",
