@@ -16,7 +16,8 @@ dependencies = [
     "fastapi",
     "pygithub",
     "gitpython",
-    "uvicorn"
+    "uvicorn",
+    "sqlalchemy",
 ]
 
 [build-system]

@@ -41,7 +41,7 @@ reviewer_agent.db
 .vscode/
 
 # uv specific
-uv.lock # Если не нужно коммитить лок-файл
+uv.lock
 
 # OS generated files
 .DS_Store
