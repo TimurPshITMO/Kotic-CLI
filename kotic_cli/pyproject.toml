@@ -13,11 +13,16 @@ dependencies = [
     "openai", # Оставляем, так как agno.models.openai.like.OpenAILike может его использовать
     # Зависимости для будущих этапов
     "textual",
-    "fastapi",
     "pygithub",
     "gitpython",
-    "uvicorn",
     "sqlalchemy",
+]
+
+[project.optional-dependencies]
+server = [
+    "fastapi",
+    "uvicorn",
+    "httpx",
 ]
 
 [build-system]
