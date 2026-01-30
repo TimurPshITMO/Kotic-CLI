@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from agno.utils.pprint import pprint_run_response
 from .coder.agent import get_agent as get_coder_agent
 from .reviewer.agent import get_agent as get_reviewer_agent
+from .utils.logger_config import logger # Import the configured logger
 
 # Загружаем переменные окружения из .env
 load_dotenv()
@@ -25,17 +26,19 @@ def main():
     )
     args = parser.parse_args()
 
-    print(f"🚀 Kotic CLI запущен...")
-    print(f"Выбран агент: {args.agent}")
-    print("-" * 20)
+    logger.info(f"🚀 Kotic CLI запущен...")
+    logger.info(f"Выбран агент: {args.agent}")
+    logger.info("-" * 20)
 
     if args.agent == "coder":
         agent = get_coder_agent()
-        print("Coder Agent готов. Введите задачу:")
+        logger.info("Coder Agent готов. Введите задачу:")
     elif args.agent == "reviewer":
         agent = get_reviewer_agent()
-        print("Reviewer Agent готов. Введите текст для ревью:")
+        logger.info("Reviewer Agent готов. Введите текст для ревью:")
     else:
+        # This case is technically caught by argparse choices, but good for defensive programming
+        logger.error(f"Неизвестный агент: {args.agent}. Выберите 'coder' или 'reviewer'.")
         raise ValueError("Неизвестный агент.")
 
     while True:
@@ -43,25 +46,27 @@ def main():
             user_input = input("You: ").strip()
 
             if user_input.lower() in ['exit', 'quit', 'q']:
-                print("До свидания!")
+                logger.info("До свидания!")
                 break
 
             if not user_input:
                 continue
 
-            print(f"Задача для агента {args.agent}: {user_input}")
-            print("-" * 20)
+            logger.info(f"Задача для агента {args.agent}: {user_input}")
+            logger.info("-" * 20)
 
             stream = agent.run(user_input, stream=True)
             pprint_run_response(stream, markdown=True)
             
-            print("\n" + "-" * 20)
+            logger.info("\n" + "-" * 20)
 
         except KeyboardInterrupt:
-            print("\nДо свидания!")
+            logger.info("\nДо свидания!")
             break
+        except Exception as e:
+            logger.exception(f"Произошла ошибка при выполнении агента: {e}")
 
-    print("🤖 Kotic CLI завершил свою работу.")
+    logger.info("🤖 Kotic CLI завершил свою работу.")
 
 if __name__ == "__main__":
     main()

@@ -23,6 +23,7 @@ server = [
     "fastapi",
     "uvicorn",
     "httpx",
+    "asyncio"
 ]
 
 [build-system]
